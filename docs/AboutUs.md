@@ -13,7 +13,7 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 
 ### Seth Tay
 
-<img src="images/seth.png" width="200px">
+<img src="images/choppyback.png" width="200px">
 
 [[github](https://github.com/choppyback)]
 
