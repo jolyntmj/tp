@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import seedu.address.commons.core.index.Index;
@@ -13,6 +14,7 @@ import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.Skill;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -121,4 +123,25 @@ public class ParserUtil {
         }
         return tagSet;
     }
+
+    /**
+     * Parses an {@code Optional<String> skill} into a {@code Skill}.
+     * Leading and trailing whitespaces will be trimmed.
+     * Returns {@code null} if no skill value is provided.
+     *
+     * @throws ParseException if the given {@code skill} is invalid.
+     */
+    public static Skill parseSkill(Optional<String> skill) throws ParseException {
+        requireNonNull(skill);
+        if (skill.isEmpty()) {
+            return new Skill("novice");
+        }
+
+        String trimmedSkill = skill.get().trim();
+        if (!Skill.isValidSkill(trimmedSkill)) {
+            throw new ParseException(Skill.MESSAGE_CONSTRAINTS);
+        }
+        return new Skill(trimmedSkill);
+    }
+
 }
