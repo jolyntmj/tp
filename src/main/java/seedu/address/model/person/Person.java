@@ -39,6 +39,12 @@ public class Person {
         this.skill = skill;
     }
 
+    /**
+     * Creates a {@code Person} without an explicit skill level.
+     * The skill level defaults to novice.
+     *
+     * This constructor is provided to support edit command.
+     */
     public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags) {
         requireAllNonNull(name, phone, email, address, tags);
         this.name = name;
