@@ -110,6 +110,7 @@ public class Person {
                 && phone.equals(otherPerson.phone)
                 && email.equals(otherPerson.email)
                 && address.equals(otherPerson.address)
+                && skill.equals(otherPerson.skill)
                 && tags.equals(otherPerson.tags);
     }
 
