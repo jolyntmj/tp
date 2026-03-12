@@ -49,12 +49,9 @@ public class AddCommandParser implements Parser<AddCommand> {
         Address address = ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS).get());
 
         //injuryStatus can be optional
-        InjuryStatus injuryStatus;
-        if (argMultimap.getValue(PREFIX_INJURY_STATUS).isPresent()) {
-            injuryStatus = ParserUtil.parseInjuryStatus(argMultimap.getValue(PREFIX_INJURY_STATUS).get());
-        } else {
-            injuryStatus = new InjuryStatus(InjuryStatus.DEFAULT_INJURY_STATUS);
-        }
+        InjuryStatus injuryStatus = ParserUtil.parseInjuryStatus(
+            argMultimap.getValue(PREFIX_INJURY_STATUS)
+                    .orElse(InjuryStatus.DEFAULT_INJURY_STATUS));
 
         Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
 

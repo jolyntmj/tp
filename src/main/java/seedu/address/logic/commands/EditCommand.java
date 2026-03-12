@@ -3,6 +3,7 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_INJURY_STATUS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
@@ -44,6 +45,7 @@ public class EditCommand extends Command {
             + "[" + PREFIX_PHONE + "PHONE] "
             + "[" + PREFIX_EMAIL + "EMAIL] "
             + "[" + PREFIX_ADDRESS + "ADDRESS] "
+            + "[" + PREFIX_INJURY_STATUS + "INJURY_STATUS] "
             + "[" + PREFIX_TAG + "TAG]...\n"
             + "Example: " + COMMAND_WORD + " 1 "
             + PREFIX_PHONE + "91234567 "
@@ -100,7 +102,8 @@ public class EditCommand extends Command {
         Phone updatedPhone = editPersonDescriptor.getPhone().orElse(personToEdit.getPhone());
         Email updatedEmail = editPersonDescriptor.getEmail().orElse(personToEdit.getEmail());
         Address updatedAddress = editPersonDescriptor.getAddress().orElse(personToEdit.getAddress());
-        InjuryStatus updatedInjuryStatus = personToEdit.getInjuryStatus();
+        InjuryStatus updatedInjuryStatus = editPersonDescriptor.getInjuryStatus()
+            .orElse(personToEdit.getInjuryStatus());
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
 
         return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedInjuryStatus, updatedTags);
@@ -139,6 +142,7 @@ public class EditCommand extends Command {
         private Phone phone;
         private Email email;
         private Address address;
+        private InjuryStatus injuryStatus;
         private Set<Tag> tags;
 
         public EditPersonDescriptor() {}
@@ -152,6 +156,7 @@ public class EditCommand extends Command {
             setPhone(toCopy.phone);
             setEmail(toCopy.email);
             setAddress(toCopy.address);
+            setInjuryStatus(toCopy.injuryStatus);
             setTags(toCopy.tags);
         }
 
@@ -159,7 +164,7 @@ public class EditCommand extends Command {
          * Returns true if at least one field is edited.
          */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyNonNull(name, phone, email, address, tags);
+            return CollectionUtil.isAnyNonNull(name, phone, email, address, injuryStatus, tags);
         }
 
         public void setName(Name name) {
@@ -188,6 +193,14 @@ public class EditCommand extends Command {
 
         public void setAddress(Address address) {
             this.address = address;
+        }
+
+        public void setInjuryStatus(InjuryStatus injuryStatus) {
+            this.injuryStatus = injuryStatus;
+        }
+
+        public Optional<InjuryStatus> getInjuryStatus() {
+            return Optional.ofNullable(injuryStatus);
         }
 
         public Optional<Address> getAddress() {
@@ -227,6 +240,7 @@ public class EditCommand extends Command {
                     && Objects.equals(phone, otherEditPersonDescriptor.phone)
                     && Objects.equals(email, otherEditPersonDescriptor.email)
                     && Objects.equals(address, otherEditPersonDescriptor.address)
+                    && Objects.equals(injuryStatus, otherEditPersonDescriptor.injuryStatus)
                     && Objects.equals(tags, otherEditPersonDescriptor.tags);
         }
 
@@ -237,6 +251,7 @@ public class EditCommand extends Command {
                     .add("phone", phone)
                     .add("email", email)
                     .add("address", address)
+                    .add("injuryStatus", injuryStatus)
                     .add("tags", tags)
                     .toString();
         }
