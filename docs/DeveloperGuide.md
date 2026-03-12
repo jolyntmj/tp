@@ -274,72 +274,254 @@ _{Explain here how the data archiving feature will be implemented}_
 
 **Target user profile**:
 
-* has a need to manage a significant number of contacts
-* prefer desktop apps over other types
-* can type fast
-* prefers typing to mouse interactions
-* is reasonably comfortable using CLI apps
+* Personal Trainers who manage a large client base and track client progress.
+* Has a need to quickly access their contact details.
+* Prefers a desktop app with an easy-to-use interface.
+* Manages clients and their injuries efficiently.
 
-**Value proposition**: manage contacts faster than a typical mouse/GUI driven app
-
-
+**Value proposition**: Provides a centralized system for personal trainers to efficiently manage client contact details, track injury histories, and monitor training goals and skill progress, optimized for users who prefer a fast, keyboard-driven interface.
 ### User stories
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
-| Priority | As a …​                                    | I want to …​                 | So that I can…​                                                        |
-|----------|--------------------------------------------|------------------------------|------------------------------------------------------------------------|
-| `* * *`  | new user                                   | see usage instructions       | refer to instructions when I forget how to use the App                 |
-| `* * *`  | user                                       | add a new person             |                                                                        |
-| `* * *`  | user                                       | delete a person              | remove entries that I no longer need                                   |
-| `* * *`  | user                                       | find a person by name        | locate details of persons without having to go through the entire list |
-| `* *`    | user                                       | hide private contact details | minimize chance of someone else seeing them by accident                |
-| `*`      | user with many persons in the address book | sort persons by name         | locate a person easily                                                 |
-
-*{More to be added}*
+| Priority | As a …​    | I want to …​                              | So that I can…​                                              |
+|------|------------|-------------------------------------------|---------------------------------------------------------------|
+| `* * *` | trainer    | add a client with their personal particulars | create a basic contact record for a new client             |
+| `* * *` | trainer    | find a client by searching for their name | quickly access a specific person's profile                    |
+| `* * *` | trainer    | delete a specific client record           | remove clients who are no longer training with me             |
+| `* * *` | trainer    | list all clients currently in the system  | see an overview of my entire client base                      |
+| `* * *` | trainer    | view a client's injury history            | plan a safe workout before the session starts                 |
+| `* *` | trainer    | record a trainee's weekly availability    | efficiently plan my training schedule in advance              |
+| `* * *` | trainer    | save my client data                       | never lose my client data                                     |
+| `* * *` | trainer    | update a client's contact details         | maintain accurate contact information                         |
+| `* * *` | new user   | launch the app via the command line       | start managing my data quickly                                |
+| `* * *` | trainer    | record a new injury for a client          | keep their health profile up to date                          |
+| `* * *` | trainer    | set an initial training level (e.g., Beginner) | know where to start a new client's training workout      |
+| `* * *` | trainer    | filter the list by training level         | plan group sessions for similar abilities                     |
+| `*`  | impatient user | get search results in under 200ms     | not feel held up while on the gym floor                       |
+| `* * *` | trainer    | undo the last command executed            | quickly fix accidental deletions or edits                     |
+| `*`  | trainer    | list all clients who have no recorded injuries | identify clients who can handle high-intensity workouts  |
+| `*`  | expert user | use short aliases (e.g., `a` for add)    | enter data faster during back-to-back sessions                |
+| `*`  | trainer    | edit an existing progress note            | correct typos or add more detail later                        |
+| `*`  | trainer    | clear the screen with a command           | keep my terminal interface tidy and focused                   |
+| `*`  | expert user | perform multi-parameter searches         | find beginners with back injuries more specifically           |
+| `*`  | expert user | export a summary report of all clients   | review my monthly coaching impact offline                     |
 
 ### Use cases
 
-(For all use cases below, the **System** is the `AddressBook` and the **Actor** is the `user`, unless specified otherwise)
+(For all use cases below, the **Actor** is the `Trainer`, unless specified otherwise)
 
-**Use case: Delete a person**
+
+**Use case: UC1 - Add a client**
 
 **MSS**
 
-1.  User requests to list persons
-2.  AddressBook shows a list of persons
-3.  User requests to delete a specific person in the list
-4.  AddressBook deletes the person
+1. User enters the add command with all mandatory parameters (n/ p/ e/ a/ av/ t/) and optional parameters if any.
+2. PTCoach validates all parameters.
+3. PTCoach checks if the phone number duplicates an existing client.
+4. PTCoach creates a new client record.
+5. PTCoach adds the client to the client list.
+6. PTCoach displays the message: “New person added: [CLIENT_NAME]”.
+7. PTCoach clears the input field.
+8. PTCoach automatically saves the updated data.
 
     Use case ends.
 
 **Extensions**
 
-* 2a. The list is empty.
+* 1a. The list is empty.
+  * 1a1. PTCoach shows an error message.
 
-  Use case ends.
+    Use case ends.
+  
+* 2a. Invalid parameter format 
+  * 2a1. PTCoach shows the corresponding validation error message.
+  
+    Use case ends.
 
-* 3a. The given index is invalid.
+* 2b. Unknown flag provided 
+  * 2b1. PTCoach shows an error message.
 
-    * 3a1. AddressBook shows an error message.
+    Use case ends.
+* 2c. Redundant flag detected (multiple values for same flag)
+  * 2c1. PTCoach shows an error message.
+    
+    Use case ends.
 
-      Use case resumes at step 2.
+* 3a. Duplicate phone number detected
+  * 3a1. PTCoach prompts user for confirmation to replace existing record.
+  * 3a2. User confirms replacement.
+  * 3a3. PTCoach replaces the existing client record.
+  * 3a4. PTCoach displays success message.
+  
+    Use case ends.
+  
+  * 3a5. User confirms replacement.
+  * 3a6. PTCoach cancels the add operation.
 
-*{More to be added}*
+    Use case ends.
+
+
+**Use case: UC2 - Find a specific client**
+
+**MSS**
+
+1. User requests to find a specific clients
+2. PTCoach shows list of all clients that match the person(s)
+
+   Use case ends.
+
+**Extensions**
+
+* 2a. The find argument is empty
+  * 2a1. PTCoach shows, “Error: Invalid command format. Parameter: find [KEYWORD]. Eg. find alice”
+    
+    Use case ends.
+* 2b. Find a non-name
+  * 2b1. PTCoach shows, “Error: Invalid name search. Parameter: find [KEYWORD]. Eg. find alice”
+     
+    Use case ends.
+
+**Use case: UC3 - Update a client**
+
+**MSS**
+
+1. User requests to update a specific client by index and provides new details by specifying the parameter to update (any valid parameter specified in add command).
+2. PTCoach validates the index and the new details.
+3. PTCoach updates the client and displays the updated details.
+
+   Use case ends.
+
+**Extensions**
+
+* 2a. The list is empty or the provided index is out of bounds.
+  * 2a1. PTCoach shows an error message: “Invalid index provided.”
+  
+    Use case ends.
+
+* 2b. The new details provided are in an invalid format.
+  * 2b1. PTCoach shows an error message: “Invalid field format: [field name].”
+  
+    Use case ends.
+
+* 2c. The update would create a duplicate of an existing person.
+  * 2c1. PTCoach shows an error message: “This person already exists in the records.”
+  
+    Use case ends.
+
+**Use case: UC4 - Delete a client**
+
+**MSS**
+
+1. User requests to delete a specific client by index.
+2. PTCoach deletes the client and removes it from storage.
+3. PTCoach shows a success message confirming the deletion.
+
+   Use case ends
+
+**Extensions**
+
+* 1a. The list is empty or the provided index is out of bounds.
+  * 1a1. PTCoach shows an error message: “Invalid index provided.”
+  
+    Use case ends.
+
+**Use case: UC5 - Launch the app via command line**
+
+**MSS**
+
+1. User requests to launch the app via command line (java -jar PTCoach.jar)
+2. PTCoach launches
+
+   Use case ends
+
+**Extensions**
+
+* 1a. App can’t launch due to wrong input (java -jar PTCoach.jarn)
+  * 1a1. PTCoach shows “Error: Unable to access jarfile PTCoach.jarn”
+  * 1a2. User changes input to “java -jar PTCoach.jar”
+  * 1a3. PTCoach launches
+  
+    Use case ends.
+* 1b. App can’t launch due to wrong directory (java -jar PTCoach.jar)
+  * 1b1. PTCoach shows  “Error: Unable to access jarfile PTCoach.jar”
+  * 1b2. User changes to the directory containing PTCoach.jar using cd command
+  * 1b3. User enters “java -jar PTCoach.jar”
+  * PTCoach launches
+  
+    Use case ends
+
+**Use case: UC6 - List all clients**
+
+**MSS**
+
+1. User requests to view clients
+2. PTCoach shows list of all clients
+3. Use case ends
+
+**Extensions**
+* 2a. The list is empty
+  * 2a1. PTCoach shows “No clients, try adding a client using /add” message.
+  
+    Use case ends.
+
+**Use case: UC7 - Read client details**
+
+**MSS**
+
+1. The user enters a read command with one keyword and option flags in the command line.
+2. PTCoach validates the command format.
+3. PTCoach searches the client database using the provided keywords.
+4. PTCoach selects the first matching client record.
+5. PTCoach retrieves the requested particulars based on the specified options.
+6. PTCoach displays the requested client data in the command-line interface.
+
+   Use case ends
+
+**Extensions**
+* 2a. Invalid parameter format
+  * 2a1. PTCoach shows the corresponding validation error message.
+  
+    Use case ends.
+
+* 2b. Unknown flag provided
+  * 2b1. PTCoach shows the corresponding validation error message.
+  
+    Use case ends.
+
+* 2c. Redundant flag detected (multiple values for same flag)
+  * 2c1. PTCoach shows the corresponding validation error message.
+  
+    Use case ends.
+
+* 3a. Client record not found
+  * 3a1. PTCoach shows the corresponding validation error message.
+  
+    Use case ends.
 
 ### Non-Functional Requirements
 
 1.  Should work on any _mainstream OS_ as long as it has Java `17` or above installed.
 2.  Should be able to hold up to 1000 persons without a noticeable sluggishness in performance for typical usage.
 3.  A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
+4.  Should be usable by a novice who has never created a client address book before.
+5.  Should be able to return search results in under 200ms.
 
 *{More to be added}*
 
 ### Glossary
 
-* **Mainstream OS**: Windows, Linux, Unix, MacOS
-* **Private contact detail**: A contact detail that is not meant to be shared with others
+* **Personal Particulars**: The set of information stored for each client, including:
+  - Name  
+  - Contact Number  
+  - Address  
+  - Availability  
+  - Training Goals  
+  - Skill Level*  
+  - Progress Record*  
+  - Injury Status*  
 
+  \* Optional particulars
 --------------------------------------------------------------------------------------------------------------------
 
 ## **Appendix: Instructions for manual testing**

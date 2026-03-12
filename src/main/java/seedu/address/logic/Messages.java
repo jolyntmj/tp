@@ -43,9 +43,13 @@ public class Messages {
                 .append(person.getEmail())
                 .append("; Address: ")
                 .append(person.getAddress())
-                .append("; Tags: ");
-        person.getTags().forEach(builder::append);
-        builder.append("; Progress: ")
+                .append("; Training Goal: ")
+                .append(person.getTrainingGoal())
+                .append("; Availability: ")
+                .append(person.getAvailability())
+                .append("; Skill: ")
+                .append(person.getSkill())
+                .append("; Progress: ")
                 .append(person.getProgressRecord());
         return builder.toString();
     }
