@@ -45,8 +45,14 @@ public class Messages {
                 .append(person.getAddress())
                 .append("; Injury Status: ")
                 .append(person.getInjuryStatus())
-                .append("; Tags: ");
-        person.getTags().forEach(builder::append);
+                .append("; Training Goal: ")
+                .append(person.getTrainingGoal())
+                .append("; Availability: ")
+                .append(person.getAvailability())
+                .append("; Skill: ")
+                .append(person.getSkill())
+                .append("; Progress: ")
+                .append(person.getProgressRecord());
         return builder.toString();
     }
 

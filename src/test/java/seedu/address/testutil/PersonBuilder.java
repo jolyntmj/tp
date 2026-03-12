@@ -1,16 +1,15 @@
 package seedu.address.testutil;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import seedu.address.model.person.Address;
+import seedu.address.model.person.Availability;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.InjuryStatus;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
-import seedu.address.model.tag.Tag;
-import seedu.address.model.util.SampleDataUtil;
+import seedu.address.model.person.ProgressRecord;
+import seedu.address.model.person.Skill;
+import seedu.address.model.person.TrainingGoal;
 
 /**
  * A utility class to help with building Person objects.
@@ -21,6 +20,9 @@ public class PersonBuilder {
     public static final String DEFAULT_PHONE = "85355255";
     public static final String DEFAULT_EMAIL = "amy@gmail.com";
     public static final String DEFAULT_ADDRESS = "123, Jurong West Ave 6, #08-111";
+    public static final String DEFAULT_TRAINING_GOAL = "get a 6 pack";
+    public static final String DEFAULT_AVAILABILITY = "mon:0900-1000,tue:0000-2359,wed:0100-0300";
+    public static final String DEFAULT_SKILL = Skill.SKILL_NOVICE;
     private static final String DEFAULT_INJURY_STATUS = "Unknown";
 
     private Name name;
@@ -28,7 +30,10 @@ public class PersonBuilder {
     private Email email;
     private Address address;
     private InjuryStatus injuryStatus;
-    private Set<Tag> tags;
+    private Skill skill;
+    private TrainingGoal trainingGoal;
+    private Availability availability;
+    private ProgressRecord progressRecord;
 
     /**
      * Creates a {@code PersonBuilder} with the default details.
@@ -39,7 +44,10 @@ public class PersonBuilder {
         email = new Email(DEFAULT_EMAIL);
         address = new Address(DEFAULT_ADDRESS);
         injuryStatus = new InjuryStatus(DEFAULT_INJURY_STATUS);
-        tags = new HashSet<>();
+        trainingGoal = new TrainingGoal(DEFAULT_TRAINING_GOAL);
+        availability = new Availability(DEFAULT_AVAILABILITY);
+        skill = new Skill(DEFAULT_SKILL);
+        progressRecord = new ProgressRecord(ProgressRecord.DEFAULT_PROGRESS);
     }
 
     /**
@@ -51,7 +59,10 @@ public class PersonBuilder {
         email = personToCopy.getEmail();
         address = personToCopy.getAddress();
         injuryStatus = personToCopy.getInjuryStatus();
-        tags = new HashSet<>(personToCopy.getTags());
+        trainingGoal = personToCopy.getTrainingGoal();
+        availability = personToCopy.getAvailability();
+        skill = personToCopy.getSkill();
+        progressRecord = personToCopy.getProgressRecord();
     }
 
     /**
@@ -65,8 +76,8 @@ public class PersonBuilder {
     /**
      * Parses the {@code tags} into a {@code Set<Tag>} and set it to the {@code Person} that we are building.
      */
-    public PersonBuilder withTags(String ... tags) {
-        this.tags = SampleDataUtil.getTagSet(tags);
+    public PersonBuilder withTrainingGoal(String trainingGoal) {
+        this.trainingGoal = new TrainingGoal(trainingGoal);
         return this;
     }
 
@@ -75,6 +86,14 @@ public class PersonBuilder {
      */
     public PersonBuilder withAddress(String address) {
         this.address = new Address(address);
+        return this;
+    }
+
+    /**
+     * Sets the {@code Availability} of the {@code Person} that we are building.
+     */
+    public PersonBuilder withAvailability(String availability) {
+        this.availability = new Availability(availability);
         return this;
     }
 
@@ -95,6 +114,23 @@ public class PersonBuilder {
     }
 
     /**
+     * Sets the {@code Skill} of the {@code Person} that we are building.
+     */
+    public PersonBuilder withSkill(String skill) {
+        this.skill = new Skill(skill);
+        return this;
+    }
+
+    /**
+     * Sets the {@code ProgressRecord} of the {@code Person} that we are building.
+     */
+    public PersonBuilder withProgressRecord(String progressRecord) {
+        this.progressRecord = new ProgressRecord(progressRecord);
+        return this;
+    }
+
+
+    /**
      * Sets the {@code InjuryStatus} of the {@code Person} that we are building.
      */
     public PersonBuilder withInjuryStatus(String injuryStatus) {
@@ -103,7 +139,7 @@ public class PersonBuilder {
     }
 
     public Person build() {
-        return new Person(name, phone, email, address, injuryStatus, tags);
+        return new Person(name, phone, email, address, injuryStatus, trainingGoal, availability, skill, progressRecord);
     }
 
 }

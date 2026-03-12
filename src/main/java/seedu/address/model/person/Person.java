@@ -2,13 +2,9 @@ package seedu.address.model.person;
 
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 import seedu.address.commons.util.ToStringBuilder;
-import seedu.address.model.tag.Tag;
 
 /**
  * Represents a Person in the address book.
@@ -24,19 +20,46 @@ public class Person {
     // Data fields
     private final Address address;
     private final InjuryStatus injuryStatus;
-    private final Set<Tag> tags = new HashSet<>();
+    private final TrainingGoal trainingGoal;
+    private final Availability availability;
+    private final Skill skill;
+    private final ProgressRecord progressRecord;
 
     /**
      * Every field must be present and not null.
      */
-    public Person(Name name, Phone phone, Email email, Address address, InjuryStatus injuryStatus, Set<Tag> tags) {
-        requireAllNonNull(name, phone, email, address, tags);
+    public Person(Name name, Phone phone, Email email, Address address, InjuryStatus injuryStatus, TrainingGoal trainingGoal,
+                  Availability availability, Skill skill, ProgressRecord progressRecord) {
+        requireAllNonNull(name, phone, email, address, trainingGoal, availability, skill);
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+        this.address = address;
+        this.trainingGoal = trainingGoal;
+        this.availability = availability;
+        this.skill = skill;
+        this.progressRecord = progressRecord;
+        this.injuryStatus = injuryStatus;
+    }
+
+    /**
+     * Creates a {@code Person} without an explicit skill level.
+     * The skill level defaults to novice.
+     *
+     * This constructor is provided to support edit command.
+     */
+    public Person(Name name, Phone phone, Email email, Address address, InjuryStatus injuryStatus, TrainingGoal trainingGoal,
+                  Availability availability, ProgressRecord progressRecord) {
+        requireAllNonNull(name, phone, email, address, injuryStatus, trainingGoal, availability);
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.address = address;
         this.injuryStatus = injuryStatus;
-        this.tags.addAll(tags);
+        this.trainingGoal = trainingGoal;
+        this.availability = availability;
+        this.skill = new Skill(Skill.SKILL_NOVICE);
+        this.progressRecord = progressRecord;
     }
 
     public Name getName() {
@@ -59,13 +82,22 @@ public class Person {
         return injuryStatus;
     }
 
-    /**
-     * Returns an immutable tag set, which throws {@code UnsupportedOperationException}
-     * if modification is attempted.
-     */
-    public Set<Tag> getTags() {
-        return Collections.unmodifiableSet(tags);
+    public TrainingGoal getTrainingGoal() {
+        return trainingGoal;
     }
+
+    public Availability getAvailability() {
+        return availability;
+    }
+
+    public Skill getSkill() {
+        return skill;
+    }
+
+    public ProgressRecord getProgressRecord() {
+        return progressRecord;
+    }
+
 
     /**
      * Returns true if both persons have the same name.
@@ -101,13 +133,16 @@ public class Person {
                 && email.equals(otherPerson.email)
                 && address.equals(otherPerson.address)
                 && injuryStatus.equals(otherPerson.injuryStatus)
-                && tags.equals(otherPerson.tags);
+                && trainingGoal.equals(otherPerson.trainingGoal)
+                && availability.equals(otherPerson.availability)
+                && skill.equals(otherPerson.skill)
+                && progressRecord.equals(otherPerson.progressRecord);
     }
 
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, phone, email, address, injuryStatus, tags);
+        return Objects.hash(name, phone, email, address, injuryStatus, trainingGoal, availability, skill, progressRecord);
     }
 
     @Override
@@ -118,7 +153,10 @@ public class Person {
                 .add("email", email)
                 .add("address", address)
                 .add("injuryStatus", injuryStatus)
-                .add("tags", tags)
+                .add("trainingGoal", trainingGoal)
+                .add("availability", availability)
+                .add("skill", skill)
+                .add("progressRecord", progressRecord)
                 .toString();
     }
 
